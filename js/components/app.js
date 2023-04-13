@@ -31,8 +31,8 @@ export class App extends Component {
     globalDispatcher.dispatch(incrementAction)
   }
 
-  render(props) {
-    this.element.textContent = props.count
+  render() {
+    this.element.textContent = this.props.count
     return this.element
   }
 }

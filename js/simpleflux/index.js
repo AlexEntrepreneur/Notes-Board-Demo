@@ -14,7 +14,10 @@ export class Store {
 
   setState(newState) {
     this.state = newState
-    this.subscribers.forEach(subscriber => subscriber(this.state))
+    this.subscribers.forEach(subscriber => {
+      subscriber.props = { ...subscriber.props, ...this.state }
+      subscriber.render()
+    })
   }
 }
 
@@ -48,12 +51,20 @@ export class Action {
 
 export class Component {
   constructor() {
+    this.state = {}
+    this.props = {}
     this.element = null
     this.css = ``
   }
 
   subscribe(store) {
-    store.subscribe(this.render.bind(this))
+    store.subscribe(this)
+  }
+
+  setState(setter) {
+    const newState = setter()
+    this.state = { ...this.state, ...newState }
+    this.render()
   }
 
   injectCSS() {
