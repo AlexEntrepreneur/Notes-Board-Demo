@@ -1,6 +1,6 @@
-import { Component } from '../simpleflux/index.js'
-import { globalStore } from '../index.js'
-import { parseSVG } from '../utils.js'
+import { Component } from '../../simpleflux/index.js'
+import { globalStore } from '../../index.js'
+import { parseSVG } from '../../utils.js'
 
 export class Grid extends Component {
   constructor() {
