@@ -15,6 +15,7 @@ export class Note extends Component {
     const cornerHandleSize = handleSize * 2
     const handlePosition = handleSize * -1
     this.css = NoteCSS(this, handlePosition, handleSize, cornerHandleSize)
+    this.injectCSS()
   }
   
   createHandleElements(namesArray) {
@@ -37,11 +38,10 @@ export class Note extends Component {
     note.contentEditable = true
     note.classList.add('note')
     
-    noteContainerHandles.forEach(handle => container.prepend(handle))
-    container.prepend(note)
+    noteContainerHandles.forEach(handle => container.appendChild(handle))
+    container.appendChild(note)
     
     this.element = container
-    this.injectCSS()
     return this.element
   }
   
