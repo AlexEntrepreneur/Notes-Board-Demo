@@ -8,10 +8,10 @@ export class Note extends Component {
     this.subscribe(globalStore)
     this.state = {
       id: generateId(),
-      minWidth: globalStore.getState().gridSize * 16,
-      minHeight: globalStore.getState().gridSize * 4,
+      minWidth: globalStore.getState().gridUnit * 16,
+      minHeight: globalStore.getState().gridUnit * 4,
     }
-    const handleSize = globalStore.getState().gridSize / 3
+    const handleSize = globalStore.getState().gridUnit / 3
     const cornerHandleSize = handleSize * 2
     const handlePosition = handleSize * -1
     this.css = NoteCSS(this, handlePosition, handleSize, cornerHandleSize)
