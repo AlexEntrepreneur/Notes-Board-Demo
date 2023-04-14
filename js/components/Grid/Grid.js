@@ -2,6 +2,7 @@ import { Component, renderDOM } from '../../simpleflux/index.js'
 import { globalStore } from '../../index.js'
 import { parseSVG } from '../../utils.js'
 import makeDraggable from './make-draggable.js'
+import DrawingMenu from '../DrawingMenu.js'
 
 export default class Grid extends Component {
   constructor() {
@@ -49,6 +50,7 @@ export default class Grid extends Component {
     container.appendChild(el)
     
     this.element = container
+    renderDOM(DrawingMenu, this.element)
     
     makeDraggable.call(this, true)
     
