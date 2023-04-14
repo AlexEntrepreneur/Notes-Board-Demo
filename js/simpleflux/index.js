@@ -83,5 +83,9 @@ export class Component {
 }
 
 export function renderDOM(Component, rootElement) {
-  rootElement.appendChild(new Component().mount().render())
+  if (Array.isArray(Component)) {
+    Component.forEach(C => rootElement.prepend(new C().mount().render()))
+  } else {
+    rootElement.appendChild(new Component().mount().render())
+  }
 }
