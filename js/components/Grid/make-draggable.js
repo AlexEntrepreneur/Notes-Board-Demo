@@ -1,4 +1,4 @@
-export default function makeDraggable() {
+export default function makeDraggable(isInitialMount) {
   let isDragging = true
   const initialMousePos = { x: 0, y: 0 };
   const initialScrollPos = { x: 0, y: 0 };
@@ -25,7 +25,13 @@ export default function makeDraggable() {
     isDragging = false
   }
   
-  this.element.addEventListener("mousedown", handleMouseDown);
-  this.element.addEventListener("mousemove", handleMouseMove);
-  window.addEventListener("mouseup", handleMouseUp)
+  if (isInitialMount || this.props.gridIsDraggable) {
+    this.element.addEventListener("mousedown", handleMouseDown);
+    this.element.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp)
+  } else {
+    this.element.removeEventListener("mousedown", handleMouseDown);
+    this.element.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp)
+  }
 }

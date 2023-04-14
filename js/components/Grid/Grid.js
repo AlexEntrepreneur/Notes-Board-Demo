@@ -1,4 +1,4 @@
-import { Component } from '../../simpleflux/index.js'
+import { Component, renderDOM } from '../../simpleflux/index.js'
 import { globalStore } from '../../index.js'
 import { parseSVG } from '../../utils.js'
 import makeDraggable from './make-draggable.js'
@@ -49,7 +49,9 @@ export default class Grid extends Component {
     container.appendChild(el)
     
     this.element = container
-    makeDraggable.call(this)
+    
+    makeDraggable.call(this, true)
+    
     return this
   }
 }
