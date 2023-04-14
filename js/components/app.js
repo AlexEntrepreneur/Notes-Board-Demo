@@ -1,8 +1,8 @@
 import { Component, renderDOM } from '../simpleflux/index.js'
 import { globalDispatcher, globalStore } from '../index.js'
-import { Grid } from './Grid/Grid.js'
+import Grid from './Grid/Grid.js'
 
-export class App extends Component {
+export default class App extends Component {
   constructor() {
     super()
     this.subscribe(globalStore)

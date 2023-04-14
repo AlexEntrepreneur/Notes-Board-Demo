@@ -3,7 +3,7 @@ import { globalStore } from '../../index.js'
 import { parseSVG } from '../../utils.js'
 import makeDraggable from './make-draggable.js'
 
-export class Grid extends Component {
+export default class Grid extends Component {
   constructor() {
     super()
     this.subscribe(globalStore)

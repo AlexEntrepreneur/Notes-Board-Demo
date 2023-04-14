@@ -2,7 +2,7 @@ import { Component } from '../simpleflux/index.js'
 import { globalStore } from '../index.js'
 import { generateId } from '../utils.js'
 
-export class Note extends Component {
+export default class Note extends Component {
   constructor() {
     super()
     this.subscribe(globalStore)
