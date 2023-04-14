@@ -42,7 +42,7 @@ export class Note extends Component {
     container.appendChild(note)
     
     this.element = container
-    return this.element
+    return this
   }
   
   render() {

@@ -48,6 +48,6 @@ export class Grid extends Component {
     container.appendChild(el)
     
     this.element = container
-    return this.element
+    return this
   }
 }

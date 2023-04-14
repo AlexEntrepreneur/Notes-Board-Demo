@@ -83,5 +83,5 @@ export class Component {
 }
 
 export function renderDOM(Component, rootElement) {
-  rootElement.appendChild(new Component().mount())
+  rootElement.appendChild(new Component().mount().render())
 }
