@@ -74,7 +74,7 @@ export class Component {
   }
 
   mount() {
-    return this.element
+    return this
   }
 
   render() {
@@ -82,6 +82,6 @@ export class Component {
   }
 }
 
-export function render(Component, rootElement) {
-  rootElement.append(new Component().mount())
+export function renderDOM(Component, rootElement) {
+  rootElement.appendChild(new Component().mount())
 }
