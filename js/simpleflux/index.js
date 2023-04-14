@@ -53,7 +53,7 @@ export class Component {
   constructor() {
     this.state = {}
     this.props = {}
-    this.element = null
+    this.element = document.createDocumentFragment()
     this.css = ``
   }
 
@@ -71,6 +71,10 @@ export class Component {
     const styleElement = document.createElement('style')
     styleElement.textContent = this.css
     this.css && document.head.appendChild(styleElement)
+  }
+
+  mount() {
+    return this.element
   }
 
   render() {
