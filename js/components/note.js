@@ -1,39 +1,34 @@
 import { Component } from '../simpleflux/index.js'
 import { globalStore } from '../index.js'
-import { generateId } from '../utils.js'
+
 
 export default class Note extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.subscribe(globalStore)
-    this.state = {
-      id: generateId(),
-      minWidth: globalStore.getState().gridUnit * 16,
-      minHeight: globalStore.getState().gridUnit * 4,
-    }
     const handleSize = globalStore.getState().gridUnit / 3
     const cornerHandleSize = handleSize * 2
     const handlePosition = handleSize * -1
     this.css = NoteCSS(this, handlePosition, handleSize, cornerHandleSize)
     this.injectCSS()
+    console.log(this.props);
   }
   
-  createHandleElements(namesArray) {
-    const handleElements = namesArray.map((handleName) => {
+  createHandleElements(handles) {
+    return handles.map((handleName) => {
       const el = document.createElement('div')
       el.classList.add('handle', `${handleName}-hndl`)
       return el
     })
-    return handleElements;
   }
   
   mount() {
     const container = document.createElement('div')
-    const noteContainerHandles = this.createHandleElements(['top-left', 'right', 'bottom-right', 'bottom'])
     const note = document.createElement('div')
+    const noteContainerHandles = this.createHandleElements(['top-left', 'right', 'bottom-right', 'bottom'])
     
     container.classList.add('note-container')
-    container.id = this.state.id
+    container.id = this.props.id
     
     note.contentEditable = true
     note.classList.add('note')
@@ -44,44 +39,41 @@ export default class Note extends Component {
     this.element = container
     return this
   }
-  
-  render() {
-    console.log(this.state)
-    return this.element
-  }
 }
 
 const NoteCSS = (context, handlePosition, handleSize, cornerHandleSize) => `
-  #${context.state.id} {
+  #${context.props.id} {
     position: absolute;
+    top: ${context.props.originY}px;
+    left: ${context.props.originX}px;
     overflow: visible;
-    min-width: ${context.state.minWidth}px;
-    min-height: ${context.state.minHeight}px;
-    width: ${context.state.minWidth}px;
-    height: ${context.state.minHeight}px;
+    min-width: ${context.props.minWidth}px;
+    min-height: ${context.props.minHeight}px;
+    width: ${context.props.width}px;
+    height: ${context.props.height}px;
   }
-  #${context.state.id} .handle {
+  #${context.props.id} .handle {
     position: absolute;
   }
 
-  #${context.state.id} .top-left-hndl, #${context.state.id} .bottom-right-hndl {
+  #${context.props.id} .top-left-hndl, #${context.props.id} .bottom-right-hndl {
     width: ${cornerHandleSize}px;
     height: ${cornerHandleSize}px;
   }
 
-  #${context.state.id} .top-left-hndl {
+  #${context.props.id} .top-left-hndl {
     top: ${handlePosition}px;
     left: ${handlePosition}px;
     cursor: move;
   }
   
-  #${context.state.id} .bottom-right-hndl {
+  #${context.props.id} .bottom-right-hndl {
     right: ${handlePosition}px;
     bottom: ${handlePosition}px;
     cursor: nwse-resize;
   }
 
-  #${context.state.id} .right-hndl {
+  #${context.props.id} .right-hndl {
     top: 0;
     right: ${handlePosition}px;
     width: ${handleSize}px;
@@ -89,7 +81,7 @@ const NoteCSS = (context, handlePosition, handleSize, cornerHandleSize) => `
     cursor: ew-resize;
   }
 
-  #${context.state.id} .bottom-hndl {
+  #${context.props.id} .bottom-hndl {
     bottom: ${handlePosition}px;
     height: ${handleSize}px;
     width: 100%;
@@ -111,12 +103,12 @@ const NoteCSS = (context, handlePosition, handleSize, cornerHandleSize) => `
     outline: 2.5px solid #7085FD;
   }
 
-  #${context.state.id} .note::-webkit-scrollbar {
+  #${context.props.id} .note::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
-  #${context.state.id} .note::-webkit-scrollbar-thumb {
+  #${context.props.id} .note::-webkit-scrollbar-thumb {
     background: #E1E6E7;
     border-radius: 8px;
   }

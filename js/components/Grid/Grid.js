@@ -3,6 +3,7 @@ import { globalStore } from '../../index.js'
 import makeDraggable from './make-draggable.js'
 import DrawingMenu from '../DrawingMenu.js'
 import createGrid from './create-grid.js'
+import drawNote from './draw-note.js';
 
 export default class Grid extends Component {
   constructor() {
@@ -40,9 +41,13 @@ export default class Grid extends Component {
     container.appendChild(el)
     
     this.element = container
-    renderDOM(DrawingMenu, this.element)
+    renderDOM(new DrawingMenu({ drawNote: drawNote.bind(this) }), this.element)
     makeDraggable.call(this, this.state.isDraggable)
   
     return this
+  }
+  
+  toggleDraggable() {
+    this.setState((state) => ({ ...state, isDraggable: !state.isDraggable }))
   }
 }

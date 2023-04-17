@@ -1,15 +1,15 @@
 import { Component } from '../simpleflux/index.js'
 
 export default class DrawingMenu extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       items: [
-      {
-        name: 'create-note',
-        icon: '/assets/plus-icon.svg',
-        action: () => { }
-      }
+        {
+          name: 'create-note',
+          icon: '/assets/plus-icon.svg',
+          action:  this.props.drawNote
+        }
       ]
     }
     this.css = `
