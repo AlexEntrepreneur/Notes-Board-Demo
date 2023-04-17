@@ -62,8 +62,8 @@ export class Component {
   }
 
   setState(setter) {
-    const newState = setter()
-    this.state = { ...this.state, ...newState }
+    const newState = setter(this.state)
+    this.state = newState
     this.render()
   }
 
