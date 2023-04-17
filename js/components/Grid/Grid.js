@@ -1,14 +1,18 @@
 import { Component, renderDOM } from '../../simpleflux/index.js'
 import { globalStore } from '../../index.js'
-import { parseSVG } from '../../utils.js'
 import makeDraggable from './make-draggable.js'
 import DrawingMenu from '../DrawingMenu.js'
+import createGrid from './create-grid.js'
 
 export default class Grid extends Component {
   constructor() {
     super()
     this.subscribe(globalStore)
     this.state = {
+      isDraggable: true,
+      isDragging: false,
+      initialMousePos: {},
+      initialScrollPos: {},
       gridDotColor: '#E0E5E6',
       backgroundColor: '#F0F6F7'
     }
@@ -29,31 +33,16 @@ export default class Grid extends Component {
   mount() {
     const gridUnit = globalStore.getState().gridUnit
     const dotSize = globalStore.getState().gridDotSize
-    const quarterDotSize = dotSize / 4
     const container = document.createElement('div')
-    const el = parseSVG(`
-      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="dot_grid" width="${gridUnit}" height="${gridUnit}" patternUnits="userSpaceOnUse">
-          <rect width="${gridUnit}" height="${gridUnit}" fill="${this.state.backgroundColor}" />
-          <circle cx="${quarterDotSize}" cy="${quarterDotSize}" r="${dotSize}" fill="${this.state.gridDotColor}" />
-          <circle cx="${gridUnit}" cy="${quarterDotSize}" r="${dotSize}" fill="${this.state.gridDotColor}" />
-          <circle cx="${quarterDotSize}" cy="${gridUnit}" r="${dotSize}" fill="${this.state.gridDotColor}" />
-          <circle cx="${gridUnit}" cy="${gridUnit}" r="${dotSize}" fill="${this.state.gridDotColor}" />
-          </pattern>
-          </defs>
-        <rect width="100%" height="100%" fill="url(#dot_grid)" />
-      </svg>
-    `)
+    const el = createGrid.call(this, gridUnit, dotSize)
     
     container.classList.add('notes-grid')
     container.appendChild(el)
     
     this.element = container
     renderDOM(DrawingMenu, this.element)
-    
-    makeDraggable.call(this, true)
-    
+    makeDraggable.call(this, this.state.isDraggable)
+  
     return this
   }
 }

@@ -1,37 +1,28 @@
-export default function makeDraggable(isInitialMount) {
-  let isDragging = true
-  const initialMousePos = { x: 0, y: 0 };
-  const initialScrollPos = { x: 0, y: 0 };
+function handleMouseDown(e) {
+  this.setState((state) => ({
+    ...state,
+    isDragging: true,
+    initialMousePos: { x: e.clientX, y: e.clientY },
+    initialScrollPos: { x: window.scrollX, y: window.scrollY }
+  }))
+}
 
-  function handleMouseDown(e) {
-    isDragging = true
-    initialMousePos.x = e.clientX
-    initialMousePos.y = e.clientY
-    initialScrollPos.x = window.scrollX
-    initialScrollPos.y = window.scrollY
+function handleMouseMove(e) {
+  if (this.state.isDraggable && this.state.isDragging) {
+    const distanceX = e.clientX - this.state.initialMousePos.x
+    const distanceY = e.clientY - this.state.initialMousePos.y
+    const newScrollPosX = this.state.initialScrollPos.x - distanceX
+    const newScrollPosY = this.state.initialScrollPos.y - distanceY
+    window.scrollTo(newScrollPosX, newScrollPosY)
   }
-  
-  function handleMouseMove(e) {
-    if (isDragging) {
-      const distanceX = e.clientX - initialMousePos.x
-      const distanceY = e.clientY - initialMousePos.y
-      const newScrollPosX = initialScrollPos.x - distanceX
-      const newScrollPosY = initialScrollPos.y - distanceY
-      window.scrollTo(newScrollPosX, newScrollPosY)
-    }
-  }
-  
-  function handleMouseUp() {
-    isDragging = false
-  }
-  
-  if (isInitialMount || this.props.gridIsDraggable) {
-    this.element.addEventListener("mousedown", handleMouseDown);
-    this.element.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp)
-  } else {
-    this.element.removeEventListener("mousedown", handleMouseDown);
-    this.element.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp)
-  }
+}
+
+function handleMouseUp() {
+  this.setState((state) => ({ ...state, isDragging: false }))
+}
+
+export default function makeDraggable() {
+  this.element.addEventListener("mousedown", handleMouseDown.bind(this));
+  this.element.addEventListener("mousemove", handleMouseMove.bind(this));
+  window.addEventListener("mouseup", handleMouseUp.bind(this))
 }
