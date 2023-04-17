@@ -34,6 +34,7 @@ export class Dispatcher {
   dispatch(action) {
     const newState = action.execute(this.store.state)
     this.store.setState(newState)
+    console.log('Dispatcher:', this.store.state)
     return this
   }
 }
@@ -50,9 +51,9 @@ export class Action {
 }
 
 export class Component {
-  constructor() {
+  constructor(props) {
     this.state = {}
-    this.props = {}
+    this.props = { ...props } || {}
     this.element = document.createDocumentFragment()
     this.css = ``
   }
@@ -82,10 +83,28 @@ export class Component {
   }
 }
 
-export function renderDOM(Component, rootElement) {
-  if (Array.isArray(Component)) {
-    Component.forEach(C => rootElement.prepend(new C().mount().render()))
+export function renderDOM(component, rootElement) {
+  function renderInstance(C) {
+    rootElement.appendChild(C.mount().render())
+  }
+  function createInstanceAndRender(C) {
+    rootElement.appendChild(new C().mount().render())
+  }
+  
+  if (Array.isArray(component)) {
+    const reversed = [ ...component ].reverse()
+    reversed.forEach(C => {
+      if (C.prototype) {
+        createInstanceAndRender(C)
+      } else {
+        renderInstance(C)
+      }
+    })
   } else {
-    rootElement.appendChild(new Component().mount().render())
+    if (component.prototype) {
+      createInstanceAndRender(component)
+    } else {
+      renderInstance(component)
+    }
   }
 }
