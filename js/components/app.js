@@ -1,11 +1,11 @@
+import { globalStore } from '../index.js'
 import { Component, renderDOM } from '../simpleflux/index.js'
-import { globalDispatcher, globalStore } from '../index.js'
 import Grid from './Grid/Grid.js'
+import Notes from './Notes/Notes.js'
 
 export default class App extends Component {
   constructor() {
     super()
-    this.subscribe(globalStore)
   }
   
   scrollWindowOnLoad(e) {
@@ -18,13 +18,9 @@ export default class App extends Component {
   }
   
   mount() {
-    renderDOM(Grid, this.element)
+    const notesData = globalStore.getState().notes
+    renderDOM([new Notes({ notes: notesData }), Grid], this.element)
     window.addEventListener("DOMContentLoaded", this.scrollWindowOnLoad)
     return this
-  }
-  
-
-  render() {
-    return this.element
   }
 }

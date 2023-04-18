@@ -1,17 +1,19 @@
-import { Component } from '../simpleflux/index.js'
-import { globalStore } from '../index.js'
+import { Component } from '../../simpleflux/index.js'
+import { globalStore } from '../../index.js'
 
 
 export default class Note extends Component {
   constructor(props) {
     super(props)
-    this.subscribe(globalStore)
+    this.state = {
+      minWidth: globalStore.getState().gridUnit * 16,
+      minHeight: globalStore.getState().gridUnit * 4,
+    }
     const handleSize = globalStore.getState().gridUnit / 3
     const cornerHandleSize = handleSize * 2
     const handlePosition = handleSize * -1
     this.css = NoteCSS(this, handlePosition, handleSize, cornerHandleSize)
     this.injectCSS()
-    console.log(this.props);
   }
   
   createHandleElements(handles) {
@@ -32,6 +34,7 @@ export default class Note extends Component {
     
     note.contentEditable = true
     note.classList.add('note')
+    note.textContent = this.props.text
     
     noteContainerHandles.forEach(handle => container.appendChild(handle))
     container.appendChild(note)
@@ -47,8 +50,8 @@ const NoteCSS = (context, handlePosition, handleSize, cornerHandleSize) => `
     top: ${context.props.originY}px;
     left: ${context.props.originX}px;
     overflow: visible;
-    min-width: ${context.props.minWidth}px;
-    min-height: ${context.props.minHeight}px;
+    min-width: ${context.state.minWidth}px;
+    min-height: ${context.state.minHeight}px;
     width: ${context.props.width}px;
     height: ${context.props.height}px;
   }

@@ -38,3 +38,13 @@ export function snapCoordsToGrid(coords, gridUnit) {
     height: roundValueToUnit(gridUnit, coords.height)
   }
 }
+
+export function addMinWidthHeightToCoords(coords, gridUnit) {
+  const minWidth = gridUnit * 16
+  const minHeight = gridUnit * 4
+  return {
+    ...coords,
+    width: coords.width > minWidth ? coords.width: minWidth,          
+    height: coords.height > minHeight ? coords.height: minHeight,          
+  }
+}

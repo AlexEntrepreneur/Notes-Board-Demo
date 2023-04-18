@@ -1,8 +1,6 @@
-import { globalStore } from '../../index.js'
-import { renderDOM } from '../../simpleflux/index.js'
-import { deltaToElementCoords, snapCoordsToGrid } from '../../utils.js'
-import Note from '../Note.js'
-import { generateId } from '../../utils.js'
+import { globalDispatcher, globalStore } from '../../index.js'
+import { deltaToElementCoords, snapCoordsToGrid, generateId, addMinWidthHeightToCoords } from '../../utils.js'
+import { createNote } from '../../actions/actions.js'
 
 export default function drawNote() {
   const gridUnit = globalStore.getState().gridUnit
@@ -20,12 +18,10 @@ export default function drawNote() {
   function draw(gridElement, handleMouseDown, startPosition, toggleGridDraggable) {
     return function handleMouseUp(e) {
       const scrollCoords = { x: window.scrollX, y: window.scrollY }
-      const coords = snapCoordsToGrid(deltaToElementCoords(startPosition.x + scrollCoords.x, startPosition.y + scrollCoords.y, e.clientX + scrollCoords.x, e.clientY + scrollCoords.y), gridUnit)
-      const minWidth = gridUnit * 16
-      const minHeight = gridUnit * 4
+      const coords = addMinWidthHeightToCoords(snapCoordsToGrid(deltaToElementCoords(startPosition.x + scrollCoords.x, startPosition.y + scrollCoords.y, e.clientX + scrollCoords.x, e.clientY + scrollCoords.y), gridUnit), gridUnit)
       
-      renderDOM(new Note({ ...coords, minWidth, minHeight, id: generateId() }), document.getElementById('root'))
-
+      globalDispatcher.dispatch(createNote({ id: generateId(), ...coords, text: '' }))
+     
       gridElement.style.cursor = 'grab'
       toggleGridDraggable()
       gridElement.removeEventListener('mousedown', handleMouseDown)
