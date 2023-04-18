@@ -85,10 +85,10 @@ export class Component {
 
 export function renderDOM(component, rootElement) {
   function renderInstance(C) {
-    rootElement.appendChild(C.mount().render())
+    rootElement.appendChild(C.mount().element)
   }
   function createInstanceAndRender(C) {
-    rootElement.appendChild(new C().mount().render())
+    rootElement.appendChild(new C().mount().element)
   }
   
   if (Array.isArray(component)) {
