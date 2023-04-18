@@ -32,6 +32,7 @@ export function roundValueToUnit(unit, value) {
 
 export function snapCoordsToGrid(coords, gridUnit) {
   return {
+    ...coords,
     originX: roundValueToUnit(gridUnit, coords.originX),
     originY: roundValueToUnit(gridUnit, coords.originY),
     width: roundValueToUnit(gridUnit, coords.width),
