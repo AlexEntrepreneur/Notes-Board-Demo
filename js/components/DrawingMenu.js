@@ -12,7 +12,8 @@ export default class DrawingMenu extends Component {
         }
       ]
     }
-    this.css = `
+
+    this.injectStaticCSS(`
       .drawing-menu {
         background: #FFFFFF;
         border-radius: 10px;
@@ -35,8 +36,7 @@ export default class DrawingMenu extends Component {
         background-size: 23px;
         cursor: pointer;
       }
-    `
-    this.injectCSS()
+    `)
   }
   
   mount() {

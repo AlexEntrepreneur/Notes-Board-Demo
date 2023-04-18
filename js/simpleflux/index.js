@@ -55,7 +55,6 @@ export class Component {
     this.state = {}
     this.props = { ...props } || {}
     this.element = document.createDocumentFragment()
-    this.css = ``
   }
 
   subscribe(store) {
@@ -68,10 +67,19 @@ export class Component {
     this.render()
   }
 
-  injectCSS() {
-    const styleElement = document.createElement('style')
-    styleElement.textContent = this.css
-    this.css && document.head.appendChild(styleElement)
+  injectStaticCSS(css) {
+    let styleElement = document.getElementById('app-styles-elem')
+    if (styleElement) {
+      const styles = styleElement.textContent
+      if (!styles.match(css)) {
+        styleElement.textContent = styles + css
+      }
+    } else {
+      styleElement = document.createElement('style')
+      styleElement.id = 'app-styles-elem'
+      styleElement.textContent = css
+      css && document.head.appendChild(styleElement)
+    }
   }
 
   mount() {

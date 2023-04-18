@@ -17,7 +17,8 @@ export default class Grid extends Component {
       gridDotColor: '#E0E5E6',
       backgroundColor: '#F0F6F7'
     }
-    this.css = `
+
+    this.injectStaticCSS(`
       .notes-grid {
         position: absolute;
         top: 0;
@@ -26,8 +27,7 @@ export default class Grid extends Component {
         height: ${globalStore.getState().gridHeight}px;
         cursor: grab;
       }
-    `
-    this.injectCSS()
+    `)
   }
   
   mount() {
