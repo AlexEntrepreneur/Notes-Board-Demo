@@ -25,7 +25,6 @@ export default class Grid extends Component {
         width: ${globalStore.getState().gridWidth}px;
         height: ${globalStore.getState().gridHeight}px;
         cursor: grab;
-        z-index: -1;
       }
     `
     this.injectCSS()
