@@ -1,9 +1,14 @@
+import { globalStore } from '../../index.js'
 import { Component, renderDOM } from '../../simpleflux/index.js'
 import Note from './Note.js'
 
 export default class Notes extends Component {
   constructor(props) {
     super(props)
+    this.subscribe(globalStore)
+    this.state = {
+      notesCount: this.props.notes.length
+    }
   }
   
   mount() {
@@ -13,5 +18,14 @@ export default class Notes extends Component {
       renderDOM(new Note({ id: note.id }), this.element)
     })
     return this
+  }
+  
+  render() {
+    if (this.state.notesCount !== this.props.notes.length) {
+      const newNote = this.props.notes[this.props.notes.length - 1]
+      this.setState((state) => ({ ...state, notesCount: ++state.notesCount }))
+      renderDOM(new Note({ id: newNote.id, selected: true }), this.element)
+    }
+    return this.element
   }
 }
