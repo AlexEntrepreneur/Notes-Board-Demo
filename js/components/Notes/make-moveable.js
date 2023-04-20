@@ -6,7 +6,7 @@ export default function makeMoveable() {
   const noteComponent = this
   const noteElement = this.element
   const handle = noteElement.querySelector(`.top-left-hndl`)
-  const newPosition = { originX: this.props.originX, originY: this.props.originY }
+  const newPosition = { originX: this.state.originX, originY: this.state.originY }
   
   const handleMouseMove = ({ x: startX, y: startY }) => function f(e) {
     const dx = e.clientX + window.scrollX - startX
@@ -27,16 +27,15 @@ export default function makeMoveable() {
   
   const handleMouseUp = (handleMouseMoveWithStartPosition) => function handleMouseUp() {
     const gridUnit = globalStore.getState().gridUnit
-    const movedNote = snapCoordsToGrid({ ...noteComponent.props, ...newPosition }, gridUnit)
-    const newNotes = globalStore.getState().notes.map(note => note.id === noteComponent.props.id ? movedNote : note)
+    const movedNote = snapCoordsToGrid({ ...newPosition, height: noteComponent.state.height, width: noteComponent.state.width }, gridUnit)
+    const newNotes = globalStore.getState().notes.map(note => note.id === noteComponent.props.id ? { ...note, ...movedNote } : note)
     
     globalDispatcher.dispatch(updateNote(newNotes))
+    noteComponent.setState((state) => ({ ...state, ...movedNote }))
     
     document.documentElement.removeEventListener('mouseup', handleMouseUp)
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithStartPosition)
   };
   
   handle.addEventListener('mousedown', handleMouseDown)
-
-  return noteElement
 }

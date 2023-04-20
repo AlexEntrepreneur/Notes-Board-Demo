@@ -7,10 +7,13 @@ import makeResizeable from './make-resizeable.js'
 export default class Note extends Component {
   constructor(props) {
     super(props)
+    const noteData = globalStore.getState().notes.find(note => note.id === this.props.id)
     this.state = {
+      ...noteData,
       minWidth: globalStore.getState().gridUnit * 16,
-      minHeight: globalStore.getState().gridUnit * 4,
+      minHeight: globalStore.getState().gridUnit * 4
     }
+    this.subscribe(globalStore)
     const handleSize = globalStore.getState().gridUnit / 3
     const cornerHandleSize = handleSize * 2
     const handlePosition = handleSize * -1
@@ -30,15 +33,9 @@ export default class Note extends Component {
     const note = document.createElement('div')
     const noteContainerHandles = this.createHandleElements(['top-left', 'right', 'bottom-right', 'bottom'])
     
-    container.classList.add('note-container')
-    container.style.top = `${this.props.originY}px`
-    container.style.left = `${this.props.originX}px`
-    container.style.width = `${this.props.width}px`
-    container.style.height = `${this.props.height}px`
-    
     note.contentEditable = true
     note.classList.add('note')
-    note.textContent = this.props.text
+    note.textContent = this.state.text
     
     noteContainerHandles.forEach(handle => container.appendChild(handle))
     container.appendChild(note)
@@ -48,6 +45,15 @@ export default class Note extends Component {
     makeResizeable.call(this)
     
     return this
+  }
+  
+  render() {
+    this.element.classList.add('note-container')
+    this.element.style.top = `${this.state.originY}px`
+    this.element.style.left = `${this.state.originX}px`
+    this.element.style.width = `${this.state.width}px`
+    this.element.style.height = `${this.state.height}px`
+    return this.element
   }
 }
 

@@ -33,8 +33,8 @@ export class Dispatcher {
 
   dispatch(action) {
     const newState = action.execute(this.store.state)
+    console.log('Dispatcher:', newState)
     this.store.setState(newState)
-    console.log('Dispatcher:', this.store.state)
     return this
   }
 }
@@ -93,10 +93,10 @@ export class Component {
 
 export function renderDOM(component, rootElement) {
   function renderInstance(C) {
-    rootElement.appendChild(C.mount().element)
+    rootElement.appendChild(C.mount().render())
   }
   function createInstanceAndRender(C) {
-    rootElement.appendChild(new C().mount().element)
+    rootElement.appendChild(new C().mount().render())
   }
   
   if (Array.isArray(component)) {

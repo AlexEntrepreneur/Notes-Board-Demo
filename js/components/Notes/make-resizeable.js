@@ -5,7 +5,7 @@ import { snapCoordsToGrid } from '../../utils.js'
 export default function makeResizeable() {
   const noteComponent = this
   const noteElement = this.element
-  const newDimensions = { width: this.props.width, height: this.props.height }
+  const newDimensions = { width: this.state.width, height: this.state.height }
   let gridElement = null
   
   const handleMouseMove = (handleName, startPosition, startDimensions) => (e) => {
@@ -47,7 +47,7 @@ export default function makeResizeable() {
   const handleMouseDown = e => {
     e.preventDefault()
     const startPosition = { x: e.clientX, y: e.clientY }
-    const startDimensions = { width: this.props.width, height: this.props.height }
+    const startDimensions = { width: this.state.width, height: this.state.height }
     const handleName = e.target.className.split(' ')[1]
     const handleMouseMoveWithProps = handleMouseMove(handleName, startPosition, startDimensions)
     gridElement = document.querySelector('.notes-grid')
@@ -58,10 +58,11 @@ export default function makeResizeable() {
   
   const handleMouseUp = (handleMouseMoveWithProps) => function handleMouseUp() {
     const gridUnit = globalStore.getState().gridUnit
-    const resizedNote = snapCoordsToGrid({ ...noteComponent.props, ...newDimensions }, gridUnit)
-    const newNotes = globalStore.getState().notes.map(note => note.id === noteComponent.props.id ? resizedNote : note)
+    const resizedNote = snapCoordsToGrid({ ...newDimensions, originX: noteComponent.state.originX, originY: noteComponent.state.originY }, gridUnit)
+    const newNotes = globalStore.getState().notes.map(note => note.id === noteComponent.state.id ? { ...note, ...resizedNote } : note)
     
     globalDispatcher.dispatch(updateNote(newNotes))
+    noteComponent.setState((state) => ({ ...state, ...resizedNote }))
     gridElement.style.cursor = 'grab'
 
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithProps)
@@ -73,6 +74,4 @@ export default function makeResizeable() {
       note.addEventListener('mousedown', handleMouseDown)
     }
   }
-  
-  return noteElement
 }
