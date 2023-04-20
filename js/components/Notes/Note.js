@@ -1,6 +1,7 @@
 import { Component } from '../../simpleflux/index.js'
 import { globalStore } from '../../index.js'
 import makeMoveable from './make-moveable.js'
+import makeResizeable from './make-resizeable.js'
 
 
 export default class Note extends Component {
@@ -44,6 +45,7 @@ export default class Note extends Component {
     
     this.element = container
     makeMoveable.call(this)
+    makeResizeable.call(this)
     
     return this
   }

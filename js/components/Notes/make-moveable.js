@@ -1,4 +1,4 @@
-import { moveNote } from '../../actions/actions.js'
+import { updateNote } from '../../actions/actions.js'
 import { globalDispatcher, globalStore } from '../../index.js'
 import { snapCoordsToGrid } from '../../utils.js'
 
@@ -30,7 +30,7 @@ export default function makeMoveable() {
     const movedNote = snapCoordsToGrid({ ...noteComponent.props, ...newPosition }, gridUnit)
     const newNotes = globalStore.getState().notes.map(note => note.id === noteComponent.props.id ? movedNote : note)
     
-    globalDispatcher.dispatch(moveNote(newNotes))
+    globalDispatcher.dispatch(updateNote(newNotes))
     
     document.documentElement.removeEventListener('mouseup', handleMouseUp)
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithStartPosition)

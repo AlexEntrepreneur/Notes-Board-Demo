@@ -7,7 +7,7 @@ export const createNote = (noteData) => new Action((state) => {
   }
 }, noteData)
 
-export const moveNote = (notesData) => new Action((state) => {
+export const updateNote = (notesData) => new Action((state) => {
   return {
     ...state,
     notes: [...notesData]
