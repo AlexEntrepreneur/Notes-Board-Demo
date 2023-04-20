@@ -2,6 +2,7 @@ import { Component } from '../../simpleflux/index.js'
 import { globalStore } from '../../index.js'
 import makeMoveable from './make-moveable.js'
 import makeResizeable from './make-resizeable.js'
+import makeSelectable from './make-selectable.js'
 
 
 export default class Note extends Component {
@@ -41,6 +42,7 @@ export default class Note extends Component {
     container.appendChild(note)
     
     this.element = container
+    makeSelectable.call(this)
     makeMoveable.call(this)
     makeResizeable.call(this)
     
@@ -53,6 +55,8 @@ export default class Note extends Component {
     this.element.style.left = `${this.state.originX}px`
     this.element.style.width = `${this.state.width}px`
     this.element.style.height = `${this.state.height}px`
+    this.element.style.cursor = 'initial'
+    
     return this.element
   }
 }
