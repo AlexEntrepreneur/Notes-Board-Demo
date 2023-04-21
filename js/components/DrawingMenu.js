@@ -33,7 +33,7 @@ export default class DrawingMenu extends Component {
         padding: 0;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: 23px;
+        background-size: 43%;
         cursor: pointer;
       }
     `)
