@@ -165,12 +165,19 @@ renderDOM(App, document.getElementById('root'))
 ## Improvements
 ### SimpleFlux
 [ ] Immutable Virtual DOM Functionality
+
 [ ] Better Component Nesting Using `props.children`
+
 [ ] Build Component Elements Using HTML String Parsing
+
 [ ] Automatically Scoped CSS Styles
+
 [ ] Inject CSS Styles Dynamically
 ### Notes Board App
 [ ] Mobile Support
+
 [ ] Use CSS Grid For Note Positioning
+
 [ ] Zoom Functionality
+
 [ ] Add Visible Nodes For Resizing Notes
