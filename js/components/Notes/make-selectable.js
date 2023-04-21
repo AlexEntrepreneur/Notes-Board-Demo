@@ -1,15 +1,24 @@
 export default function makeSelectable() {
   const noteElement = this.element
   const elem = this.element.querySelector('.note')
-  if (this.props.selected) {
+  
+  const addSelectClass = () => {
     elem.classList.add('selected')
   }
+  
+  const removeSelectClass = () => {
+    elem.classList.remove('selected')
+  }
+  
+  if (this.props.selected) {
+    addSelectClass()
+  }
+  
+  noteElement.onmousedown = addSelectClass
+  elem.onfocus = addSelectClass
+  elem.onblur = removeSelectClass
   
   window.addEventListener('mousedown', (e) => {
-    e.target.offsetParent !== noteElement ? elem.classList.remove('selected') : null
+    e.target.offsetParent !== noteElement ? removeSelectClass() : null
   })
-  
-  noteElement.onmousedown = () => {
-    elem.classList.add('selected')
-  }
 }
