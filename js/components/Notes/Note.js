@@ -51,6 +51,7 @@ export default class Note extends Component {
   
   render() {
     this.element.classList.add('note-container')
+    this.element.id = this.props.id
     this.element.style.top = `${this.state.originY}px`
     this.element.style.left = `${this.state.originX}px`
     this.element.style.width = `${this.state.width}px`

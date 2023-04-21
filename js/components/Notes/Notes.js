@@ -25,6 +25,7 @@ export default class Notes extends Component {
       const newNote = this.props.notes[this.props.notes.length - 1]
       this.setState((state) => ({ ...state, notesCount: ++state.notesCount }))
       renderDOM(new Note({ id: newNote.id, selected: true }), this.element)
+      this.element.lastChild.querySelector('.note').focus()
     }
     return this.element
   }
