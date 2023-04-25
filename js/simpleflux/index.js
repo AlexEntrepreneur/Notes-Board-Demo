@@ -54,7 +54,7 @@ export class Component {
   constructor(props) {
     this.state = {}
     this.props = { ...props } || {}
-    this.element = document.createDocumentFragment()
+    this.element = document.createElement('fragment')
   }
 
   subscribe(store) {
@@ -92,11 +92,26 @@ export class Component {
 }
 
 export function renderDOM(component, rootElement) {
+  function handMountRenderErrors(C) {
+    const mountedComponent = C.mount()
+    try {
+      if (mountedComponent instanceof Component === false) {
+        throw  new Error(`${C.constructor.name} component mount() method must return instance of component`)
+      } else if (mountedComponent.render() instanceof HTMLElement === false) {
+        throw  new Error(`${C.constructor.name} component render() method must return HTML element`)
+      }
+      
+      rootElement.appendChild(mountedComponent.render())
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   function renderInstance(C) {
-    rootElement.appendChild(C.mount().render())
+    return handMountRenderErrors(C)
   }
   function createInstanceAndRender(C) {
-    rootElement.appendChild(new C().mount().render())
+    return handMountRenderErrors(new C())
   }
   
   if (Array.isArray(component)) {
