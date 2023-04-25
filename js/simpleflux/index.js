@@ -9,7 +9,7 @@ export class Store {
   }
 
   getState() {
-    return { ...this.state }
+    return structuredClone(this.state)
   }
 
   setState(newState) {
