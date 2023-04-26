@@ -15,8 +15,8 @@ export default class Note extends Component {
       minHeight: globalStore.getState().gridUnit * 4
     }
     this.subscribe(globalStore)
-    const handleSize = globalStore.getState().gridUnit / 3
-    const cornerHandleSize = handleSize * 2
+    const handleSize = globalStore.getState().gridUnit / 2
+    const cornerHandleSize = handleSize * 3
     const handlePosition = handleSize * -1
     this.injectStaticCSS(NoteCSS(this, handlePosition, handleSize, cornerHandleSize))
   }
