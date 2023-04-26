@@ -18,7 +18,7 @@ export default function makeSelectable() {
   elem.onfocus = addSelectClass
   elem.onblur = removeSelectClass
   
-  window.addEventListener('mousedown', (e) => {
+  window.addEventListener('click', (e) => {
     e.target.offsetParent !== noteElement ? removeSelectClass() : null
   })
 }

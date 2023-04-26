@@ -9,20 +9,26 @@ export default function makeMoveable() {
   const newPosition = { originX: this.state.originX, originY: this.state.originY }
   
   const handleMouseMove = ({ x: startX, y: startY }) => function f(e) {
-    const dx = e.clientX + window.scrollX - startX
-    const dy = e.clientY + window.scrollY - startY
+    const dx = (e.clientX || e.changedTouches[0].clientX) + window.scrollX - startX
+    const dy = (e.clientY || e.changedTouches[0].clientY) + window.scrollY - startY
     
     newPosition.originX = startX + dx
     newPosition.originY = startY + dy
     noteElement.style.top = `${newPosition.originY}px`
     noteElement.style.left = `${newPosition.originX}px`
   }
+
   const handleMouseDown = e => {
     e.preventDefault()
-    const startPosition = { x: e.clientX + window.scrollX, y: e.clientY + window.scrollY }
+    const startPosition = {
+      x: (e.clientX || e.changedTouches[0].clientX) + window.scrollX,
+      y: (e.clientY || e.changedTouches[0].clientY) + window.scrollY,
+    }
     const handleMouseMoveWithStartPosition = handleMouseMove(startPosition)
     document.documentElement.addEventListener('mousemove', handleMouseMoveWithStartPosition)
     document.documentElement.addEventListener('mouseup', handleMouseUp(handleMouseMoveWithStartPosition))
+    document.documentElement.addEventListener('touchmove', handleMouseMoveWithStartPosition)
+    document.documentElement.addEventListener('touchend', handleMouseUp(handleMouseMoveWithStartPosition))
   }
   
   const handleMouseUp = (handleMouseMoveWithStartPosition) => function handleMouseUp() {
@@ -35,7 +41,10 @@ export default function makeMoveable() {
     
     document.documentElement.removeEventListener('mouseup', handleMouseUp)
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithStartPosition)
+    document.documentElement.removeEventListener('thouchend', handleMouseUp)
+    document.documentElement.removeEventListener('touchmove', handleMouseMoveWithStartPosition)
   };
   
   handle.addEventListener('mousedown', handleMouseDown)
+  handle.addEventListener('touchstart', handleMouseDown)
 }
