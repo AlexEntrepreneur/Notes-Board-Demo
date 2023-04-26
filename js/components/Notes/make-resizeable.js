@@ -72,7 +72,7 @@ export default function makeResizeable() {
 
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithProps)
     document.documentElement.removeEventListener('mouseup', handleMouseUp)
-    document.documentElement.removeEventListener('touchemove', handleMouseMoveWithProps)
+    document.documentElement.removeEventListener('touchmove', handleMouseMoveWithProps)
     document.documentElement.removeEventListener('touchend', handleMouseUp)
   };
 
