@@ -174,9 +174,11 @@ renderDOM(App, document.getElementById('root'))
 
 [ ] Inject CSS Styles Dynamically
 ### Notes Board App
-[ ] Mobile Support
+[x] Mobile Support
 
 [ ] Use CSS Grid For Note Positioning
+
+[ ] Make App Fully Usuable Via Keyboard
 
 [ ] Zoom Functionality
 
