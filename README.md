@@ -2,7 +2,9 @@
 Notes Board is a single-page notes app demonstrating SimpleFlux: a simple way to organise vanilla javascript components using classes inspired by the Flux architecture.
 
 ## The App
-Notes Board allows you to draw, resize, and move notes on a grid board.
+Notes Board allows you to draw, resize, and move notes on a grid board:
+
+![Notes Board Demo GIF](/Notes-Board-Demo.gif)
 
 ## Getting Started
 This project is buildless and has zero dependencies. No bundler required, no `npm` required. Just run it like any static HTML website using a live server of your choice.
@@ -64,7 +66,7 @@ export default MyComponent extends Component {
   constructor() {
     this.injectStaticCss(`
       div.my-component {
-        // CSS goes here
+        position: absolute;
       }
     `)
   }
