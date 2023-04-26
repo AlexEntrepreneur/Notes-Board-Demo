@@ -9,8 +9,8 @@ export default function makeResizeable() {
   let gridElement = null
   
   const handleMouseMove = (handleName, startPosition, startDimensions) => (e) => {
-    const dx = e.clientX - startPosition.x
-    const dy = e.clientY - startPosition.y
+    const dx = (e.clientX || e.changedTouches[0].clientX) - startPosition.x
+    const dy = (e.clientY || e.changedTouches[0].clientY) - startPosition.y
     const belowMinWidth = parseInt(noteElement.style.width) < noteComponent.state.minWidth
     const belowMinHeight = parseInt(noteElement.style.height) < noteComponent.state.minHeight
     const newWidth = belowMinWidth ? noteComponent.state.minWidth : startDimensions.width + dx
@@ -46,7 +46,10 @@ export default function makeResizeable() {
 
   const handleMouseDown = e => {
     e.preventDefault()
-    const startPosition = { x: e.clientX, y: e.clientY }
+    const startPosition = {
+      x: e.clientX || e.changedTouches[0].clientX,
+      y: e.clientY || e.changedTouches[0].clientY,
+    }
     const startDimensions = { width: this.state.width, height: this.state.height }
     const handleName = e.target.className.split(' ')[1]
     const handleMouseMoveWithProps = handleMouseMove(handleName, startPosition, startDimensions)
@@ -54,6 +57,8 @@ export default function makeResizeable() {
     
     document.documentElement.addEventListener('mouseup', handleMouseUp(handleMouseMoveWithProps))
     document.documentElement.addEventListener('mousemove', handleMouseMoveWithProps)
+    document.documentElement.addEventListener('touchend', handleMouseUp(handleMouseMoveWithProps))
+    document.documentElement.addEventListener('touchmove', handleMouseMoveWithProps)
   }
   
   const handleMouseUp = (handleMouseMoveWithProps) => function handleMouseUp() {
@@ -67,11 +72,14 @@ export default function makeResizeable() {
 
     document.documentElement.removeEventListener('mousemove', handleMouseMoveWithProps)
     document.documentElement.removeEventListener('mouseup', handleMouseUp)
+    document.documentElement.removeEventListener('touchemove', handleMouseMoveWithProps)
+    document.documentElement.removeEventListener('touchend', handleMouseUp)
   };
 
   for (const note of noteElement.children) {
     if (note.className.match('handle') && !note.className.match('top-left')) {
       note.addEventListener('mousedown', handleMouseDown)
+      note.addEventListener('touchstart', handleMouseDown)
     }
   }
 }
